@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './model/user_d';
 import { CreateUserDto } from './model/user.dto';
 import { v4 as uuid } from 'uuid';
+import { UserEntity } from './model/user.entity';
 
 @Injectable()
 export class UserService {
   private static instance: UserService | null = null;
-  private users: User[] = [];
+  private users: UserEntity[] = [];
 
   constructor() {
     if (UserService.instance) {
@@ -20,14 +20,14 @@ export class UserService {
     const id = uuid();
     const timestamp = Date.now();
 
-    const user: User = {
+    const user = new UserEntity({
       id,
       login: data.login,
       password: data.password,
       version: 1,
       createdAt: timestamp,
       updatedAt: timestamp,
-    };
+    });
 
     this.users.push(user);
 
@@ -54,7 +54,7 @@ export class UserService {
     this.users = this.users.filter((user) => user.id !== id);
   }
 
-  async update(id: string, password: User['password']) {
+  async update(id: string, password: UserEntity['password']) {
     const user = await this.get(id);
 
     user.password = password;

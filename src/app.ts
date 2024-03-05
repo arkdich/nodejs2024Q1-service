@@ -1,13 +1,19 @@
 import 'dotenv/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 const PORT = Number(process.env.PORT);
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  const appReflector = app.get(Reflector);
+
+  const pipes = [new ValidationPipe()];
+  const interceptors = [new ClassSerializerInterceptor(appReflector)];
+
+  app.useGlobalPipes(...pipes);
+  app.useGlobalInterceptors(...interceptors);
 
   await app.listen(PORT);
 };

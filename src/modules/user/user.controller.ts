@@ -14,47 +14,34 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './model/user.dto';
 import { UserService } from './user.service';
-import { User } from './model/user_d';
 import { Response } from 'express';
+import { instanceToPlain } from 'class-transformer';
+import { UserEntity } from './model/user.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get(':id')
-  async get(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Omit<User, 'password'>> {
+  async get(@Param('id', new ParseUUIDPipe()) id: string): Promise<UserEntity> {
     try {
       const user = await this.userService.get(id);
 
-      return {
-        id: user.id,
-        login: user.login,
-        version: user.version,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      };
+      return user;
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.NOT_FOUND);
     }
   }
 
   @Get()
-  async getAll(): Promise<Omit<User, 'password'>[]> {
+  async getAll(): Promise<UserEntity[]> {
     const users = await this.userService.getAll();
 
-    return users.map((user) => ({
-      id: user.id,
-      login: user.login,
-      version: user.version,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    }));
+    return users;
   }
 
   @Post()
-  async create(@Body() body: CreateUserDto) {
+  async create(@Body() body: CreateUserDto): Promise<UserEntity> {
     const user = await this.userService.add(body);
 
     return user;
@@ -75,7 +62,7 @@ export class UserController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() body: UpdatePasswordDto,
     @Res() res: Response,
-  ) {
+  ): Promise<UserEntity> {
     try {
       const user = await this.userService.get(id);
 
@@ -90,7 +77,7 @@ export class UserController {
 
       const updatedUser = await this.userService.update(id, body.newPassword);
 
-      res.status(HttpStatus.OK).json(updatedUser);
+      res.status(HttpStatus.OK).json(instanceToPlain(updatedUser));
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.NOT_FOUND);
     }
