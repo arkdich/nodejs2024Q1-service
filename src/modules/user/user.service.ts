@@ -20,12 +20,13 @@ export class UserService {
     const id = uuid();
     const timestamp = Date.now();
 
-    const user = {
+    const user: User = {
       id,
+      login: data.login,
+      password: data.password,
+      version: 1,
       createdAt: timestamp,
       updatedAt: timestamp,
-      version: 1,
-      ...data,
     };
 
     this.users.push(user);
