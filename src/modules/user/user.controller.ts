@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   HttpException,
   HttpStatus,
   Param,
@@ -41,5 +43,15 @@ export class UserController {
     const user = await this.userService.add(body);
 
     return user;
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.userService.delete(id);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+    }
   }
 }

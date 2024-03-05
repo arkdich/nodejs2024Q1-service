@@ -41,4 +41,14 @@ export class UserService {
   async getAll() {
     return this.users;
   }
+
+  async delete(id: string) {
+    const user = await this.get(id);
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    this.users = this.users.filter((user) => user.id !== id);
+  }
 }
