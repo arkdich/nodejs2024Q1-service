@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './dto/types';
-import { CreateUserDto } from './dto/user.dto';
+import { User } from './model/user_d';
+import { CreateUserDto } from './model/user.dto';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -35,7 +35,13 @@ export class UserService {
   }
 
   async get(id: string) {
-    return this.users.find((user) => user.id === id);
+    const user = this.users.find((user) => user.id === id);
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    return user;
   }
 
   async getAll() {
@@ -43,12 +49,18 @@ export class UserService {
   }
 
   async delete(id: string) {
-    const user = await this.get(id);
-
-    if (!user) {
-      throw new Error(`User with id ${id} not found`);
-    }
+    await this.get(id);
 
     this.users = this.users.filter((user) => user.id !== id);
+  }
+
+  async update(id: string, password: User['password']) {
+    const user = await this.get(id);
+
+    user.password = password;
+    user.updatedAt = Date.now();
+    user.version++;
+
+    return user;
   }
 }
