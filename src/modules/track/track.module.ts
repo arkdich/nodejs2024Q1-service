@@ -3,7 +3,7 @@ import { TrackController } from './track.controller';
 import { TrackService } from './track.service';
 
 @Module({
-  imports: [],
+  exports: [TrackService],
   controllers: [TrackController],
   providers: [TrackService],
 })
