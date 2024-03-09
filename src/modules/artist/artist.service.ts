@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { ArtistDto } from './model/artist.dto';
 import { ArtistEntity } from './model/artist.entity';
 import { TrackService } from '../track/track.service';
+import { AlbumService } from '../album/album.service';
 
 @Injectable()
 export class ArtistService {
@@ -10,7 +11,10 @@ export class ArtistService {
   private artists: ArtistEntity[] = [];
 
   @Inject(TrackService)
-  private tracks: TrackService | null = null;
+  private trackService: TrackService | null = null;
+
+  @Inject(AlbumService)
+  private albumService: TrackService | null = null;
 
   constructor() {
     if (ArtistService.instance) {
@@ -51,11 +55,18 @@ export class ArtistService {
   async delete(id: string) {
     await this.get(id);
 
-    const tracks = await this.tracks.getAll();
+    const tracks = await this.trackService.getAll();
     const filteredTracks = tracks.filter((track) => track.artistId === id);
 
     for (const track of filteredTracks) {
-      await this.tracks.update(track.id, { artistId: null });
+      await this.trackService.update(track.id, { artistId: null });
+    }
+
+    const albums = await this.albumService.getAll();
+    const filteredAlbums = albums.filter((album) => album.artistId === id);
+
+    for (const album of filteredAlbums) {
+      await this.albumService.update(album.id, { artistId: null });
     }
 
     this.artists = this.artists.filter((user) => user.id !== id);
