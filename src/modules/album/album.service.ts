@@ -62,7 +62,7 @@ export class AlbumService {
     this.albums = this.albums.filter((user) => user.id !== id);
   }
 
-  async update(id: string, data: AlbumDto) {
+  async update(id: string, data: Partial<AlbumDto>) {
     const album = await this.get(id);
 
     album.name = data.name;

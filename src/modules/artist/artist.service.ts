@@ -14,7 +14,7 @@ export class ArtistService {
   private trackService: TrackService | null = null;
 
   @Inject(AlbumService)
-  private albumService: TrackService | null = null;
+  private albumService: AlbumService | null = null;
 
   constructor() {
     if (ArtistService.instance) {
