@@ -488,7 +488,7 @@ paths:
         404:
           description: Track was not found.
 
-  /albums:
+  /album:
     get:
       tags:
         - Album
@@ -542,7 +542,7 @@ paths:
         401:
           $ref: '#/components/responses/UnauthorizedError'
 
-  /albums/{id}:
+  /album/{id}:
     parameters:
       - name: id
         in: path
@@ -550,6 +550,7 @@ paths:
         schema:
           type: string
           format: uuid
+
     get:
       tags:
         - Album
@@ -622,7 +623,7 @@ paths:
         404:
           description: Album was not found.
 
-  /artists:
+  /artist:
     get:
       tags:
         - Artist
@@ -639,6 +640,7 @@ paths:
                   $ref: '#/components/schemas/Artist'
         401:
           $ref: '#/components/responses/UnauthorizedError'
+
     post:
       tags:
         - Artist
@@ -669,7 +671,8 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /artists/{id}:
+
+  /artist/{id}:
     parameters:
       - name: id
         in: path
@@ -677,6 +680,7 @@ paths:
         schema:
           type: string
           format: uuid
+
     get:
       tags:
         - Artist
@@ -695,6 +699,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Artist was not found.
+
     put:
       tags:
         - Artist
@@ -727,6 +732,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Artist was not found.
+
     delete:
       tags:
         - Artist
@@ -741,6 +747,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Artist was not found.
+
   /favs:
     get:
       tags:
@@ -756,6 +763,7 @@ paths:
                 $ref: '#/components/schemas/Favorites'
         401:
           $ref: '#/components/responses/UnauthorizedError'
+
   /favs/track/{id}:
     parameters:
       - name: id
@@ -764,6 +772,7 @@ paths:
         schema:
           type: string
           format: uuid
+
     post:
       tags:
         - Favorites
@@ -778,6 +787,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         422:
           description: Track with id doesn't exist.
+
     delete:
       tags:
         - Favorites
@@ -792,6 +802,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Track was not found.
+
   /favs/album/{id}:
     parameters:
       - name: id
@@ -800,6 +811,7 @@ paths:
         schema:
           type: string
           format: uuid
+
     post:
       tags:
         - Favorites
@@ -814,6 +826,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         422:
           description: Album with id doesn't exist.
+
     delete:
       tags:
         - Favorites
@@ -828,6 +841,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Album was not found.
+
   /favs/artist/{id}:
     parameters:
       - name: id
@@ -836,6 +850,7 @@ paths:
         schema:
           type: string
           format: uuid
+
     post:
       tags:
         - Favorites
@@ -850,6 +865,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         422:
           description: Artist with id doesn't exist.
+
     delete:
       tags:
         - Favorites
