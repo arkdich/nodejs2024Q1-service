@@ -7,7 +7,26 @@ import { TrackService } from '../track/track.service';
 @Injectable()
 export class AlbumService {
   private static instance: AlbumService | null = null;
-  private albums: AlbumEntity[] = [];
+  private albums: AlbumEntity[] = [
+    // {
+    //   id: '050a70a9-7197-430b-b517-780a25b2aed8',
+    //   name: 'consequat exercitation aliquip',
+    //   artistId: '60c15dbc-2031-32d0-4a0f-48080e878c11',
+    //   year: 2015,
+    // },
+    // {
+    //   id: '2ca77a49-4b4c-4fe2-8d13-bd4ce1e08c64',
+    //   name: 'consequat exercitation aliquip',
+    //   artistId: '60c15dbc-2031-32d0-4a0f-48080e878c11',
+    //   year: 2015,
+    // },
+    // {
+    //   id: 'c3e0afc4-28df-4708-bdd5-e188ef6d4dd3',
+    //   name: 'consequat exercitation aliquip',
+    //   artistId: '60c15dbc-2031-32d0-4a0f-48080e878c11',
+    //   year: 2015,
+    // },
+  ];
 
   @Inject(TrackService)
   private tracks: TrackService | null = null;

@@ -8,7 +8,23 @@ import { AlbumService } from '../album/album.service';
 @Injectable()
 export class ArtistService {
   private static instance: ArtistService | null = null;
-  private artists: ArtistEntity[] = [];
+  private artists: ArtistEntity[] = [
+    // {
+    //   id: '9e8d780f-b835-4932-baf7-4475a66bcc42',
+    //   name: 'Lorem Excepteur',
+    //   grammy: true,
+    // },
+    // {
+    //   id: '59dd2d7a-5a78-4811-8f61-57e52cb71886',
+    //   name: 'Lorem Excepteur',
+    //   grammy: true,
+    // },
+    // {
+    //   id: '81fc587a-6263-4b4e-90be-bee6857d8e29',
+    //   name: 'Lorem Excepteur',
+    //   grammy: true,
+    // },
+  ];
 
   @Inject(TrackService)
   private trackService: TrackService | null = null;
