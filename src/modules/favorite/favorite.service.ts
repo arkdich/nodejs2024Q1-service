@@ -8,6 +8,9 @@ import { FavoriteEntity } from './model/favorite.entity';
 export class FavoriteService {
   private static instance: FavoriteService | null = null;
   private favorites: FavoriteEntity = {
+    // albums: ['050a70a9-7197-430b-b517-780a25b2aed8'],
+    // artists: ['9e8d780f-b835-4932-baf7-4475a66bcc42'],
+    // tracks: ['a7812f71-b070-4bdc-b7a7-e4dda7785b27'],
     albums: [],
     artists: [],
     tracks: [],
@@ -33,17 +36,23 @@ export class FavoriteService {
   async addAlbum(id: string) {
     const album = await this.albumService.get(id);
 
+    if (this.favorites.albums.includes(album.id)) return;
+
     this.favorites.albums.push(album.id);
   }
 
   async addTrack(id: string) {
     const track = await this.trackService.get(id);
 
+    if (this.favorites.tracks.includes(track.id)) return;
+
     this.favorites.tracks.push(track.id);
   }
 
   async addArtist(id: string) {
     const artist = await this.artistService.get(id);
+
+    if (this.favorites.artists.includes(artist.id)) return;
 
     this.favorites.artists.push(artist.id);
   }
@@ -73,26 +82,28 @@ export class FavoriteService {
   }
 
   async get() {
-    const tracks = await Promise.all(
+    const tracks = await Promise.allSettled(
       this.favorites.tracks.map((id) => this.trackService.get(id)),
     );
 
-    console.log(tracks[0]);
-
-    const albums = await Promise.all(
+    const albums = await Promise.allSettled(
       this.favorites.albums.map((id) => this.albumService.get(id)),
     );
 
-    const artists = await Promise.all(
+    const artists = await Promise.allSettled(
       this.favorites.artists.map((id) => this.artistService.get(id)),
     );
 
-    console.log(tracks);
-
     return {
-      tracks,
-      albums,
-      artists,
+      tracks: tracks
+        .map((track) => (track.status === 'fulfilled' ? track.value : null))
+        .filter(Boolean),
+      albums: albums
+        .map((album) => (album.status === 'fulfilled' ? album.value : null))
+        .filter(Boolean),
+      artists: artists
+        .map((artist) => (artist.status === 'fulfilled' ? artist.value : null))
+        .filter(Boolean),
     };
   }
 }

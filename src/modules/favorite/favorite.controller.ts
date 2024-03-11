@@ -30,7 +30,7 @@ export class FavoriteController {
 
       return { message: `Track with id ${id} added to favorites` };
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+      throw new HttpException(err.message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
@@ -52,7 +52,7 @@ export class FavoriteController {
 
       return { message: `Album with id ${id} added to favorites` };
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+      throw new HttpException(err.message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
@@ -74,7 +74,7 @@ export class FavoriteController {
 
       return { message: `Artist with id ${id} added to favorites` };
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+      throw new HttpException(err.message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
